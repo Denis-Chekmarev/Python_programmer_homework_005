@@ -25,7 +25,7 @@ def player_choise(symbol: str, board: list) -> int:
             print('Wrong input. Please input the number from 1 to 9 --> ')
             continue
         if 1 <= player_input <= 9:
-            if str(board[player_input-1]) == '.':
+            if str(board[player_input-1]) == ' ':
                 valid = True
             else:
                 print('This element is not empty. Try again --> ')
@@ -37,7 +37,7 @@ def player_choise(symbol: str, board: list) -> int:
 def is_win(board):
     win_coords = ((0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6))
     for elem in win_coords:
-        if board[elem[0]] == board[elem[3]] == board[elem[2]]:
+        if board[elem[0]] == board[elem[1]] == board[elem[2]]:
             return board[elem[0]]
     return False
 
@@ -64,7 +64,7 @@ def main(field):
         if counter == 9:
             print('Nobody win')
             break
-    draw_field(field)
+    # draw_field(field)
 
 
 main(field)
