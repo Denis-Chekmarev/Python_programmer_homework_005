@@ -12,16 +12,6 @@ def get_number(text: str, error_text = 'Wrong input. Try again -> ') -> int:
             print(error_text, end='')
 
 
-def draw_status(data: list):
-    system('cls')
-    print('\t1\t2\t3')
-    for i in range(len(data)):
-        print(f'{i+1}\t', end='')
-        for j in range(len(data[0])):
-            print(data[i][j], end='\t')
-        print('\n\n')
-
-
 def read_file(filename: str) -> str:
     res = ''
     with open(filename, 'r', encoding='utf-8') as file:
