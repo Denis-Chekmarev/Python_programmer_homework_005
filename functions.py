@@ -1,15 +1,16 @@
 from os import system
 
 
-def get_number(text: str, error_text = 'Wrong input. Try again -> ') -> int:
+def get_number(text: str, error_text = 'Wrong input. Try again -> ', min=1, max=28) -> int:
     print(text, end='')
     while True:
         numb = input()
         if numb.isdigit():
-            numb = float(numb)
-            return numb
-        else:
-            print(error_text, end='')
+            numb = int(numb)
+            if min <= numb <= max:
+                return numb
+            else: print(error_text, end='')
+        else: print(error_text, end='')
 
 
 def read_file(filename: str) -> str:
