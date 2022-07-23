@@ -17,24 +17,23 @@ def code(text: str) -> str:
             count = 0
 
 
-# def decode(text: str) -> str:
-#     foo = lambda x: [''.join(x[-1]) for i in range(int(x[0]))]
-#     return ''.join(map(foo, text.split(', ')))
+def decode(text: str) -> str:
+    res = ''
+    elements = text.split(', ')
+    for elem in elements:
+        count = int(elem[0])
+        symbol = elem[-1]
+        for i in range(count):
+            res += symbol
+    return res
 
 
+with open('file.txt', 'r') as file:
+    text = file.readline()
 
-# with open('file.txt', 'r') as file:
-#     text = file.readline()
+codding = code(text)
+decodding = decode(codding)
 
-# codding = code(text)
-# # decodding = decode(codding)
-
-# print(f'Origin text - {text}')
-# print(f'Codding text - {codding}')
-# # print(f'Decodding text - {decodding}')
-
-
-x = '4xA'
-res = ''
-
-print(res)
+print(f'Origin text - {text}')
+print(f'Codding text - {codding}')
+print(f'Decodding text - {decodding}')
