@@ -1,83 +1,70 @@
 # Создайте программу для игры в ""Крестики-нолики""
 
 
-from random import choice
-from os import system 
-import time
-from turtle import position
+from os import system
 
 
-data = {
-    'sizex': 3,
-    'sizey': 3,
-    'player_symbol': 'X',
-    'bot_symbol': '0',
-    'field': [], 
-    'game': 'play'
-}
+field = [' ' for x in range(1, 10)]
 
 
-def init_field(data: dict) -> dict:
-    for i in range(data['sizex']):
-        data['field'].append(['.' for i in range(data['sizey'])])
-    return data
-
-
-def draw_status(data: dict):
+def draw_field(field: list) -> None:
     system('cls')
-    print('\n')
-    for i in range(len(data['field'])):
-        print('\t', end='')
-        for j in range(len(data['field'][0])):
-            print(data['field'][i][j], end='\t')
-        print('\n\n')
+    print('-------------')
+    for i in range(3):
+        print(f'| {field[0+i*3]} | {field[1+i*3]} | {field[2+i*3]} |')
+        print('-------------')
 
 
-def bot_choise(data: dict) -> tuple:
-    positions = get_free_positions(data)
-    if positions == None:
-        return data
-    zero = choice(positions)
-    data['field'][zero[0]][zero[1]] = data['bot_symbol']
-    draw_status(data)
-    time.sleep(0.5)
-    return data
-
-
-def player_choise(data: dict) -> list:
-    x = input('Your position -> ')
-    zero = tuple(map(int, x.split()))
-    data['field'][zero[1]-1][zero[0]-1] = data['player_symbol']
-    draw_status(data)
-    time.sleep(0.5)
-    return data
-
-
-def get_free_positions(data: dict) -> tuple:
-    result = []
-    for i in range(data['sizex']):
-        for j in range(data['sizey']):
-            if data['field'][i][j] == '.':
-                result.append((i, j))
-    return result
+def player_choise(symbol: str, board: list) -> int:
+    valid = False
+    while not valid:
+        player_input = input(f'Chose the place for {symbol} -> ')
+        try:
+            player_input = int(player_input)
+        except ValueError:
+            print('Wrong input. Please input the number from 1 to 9 --> ')
+            continue
+        if 1 <= player_input <= 9:
+            if str(board[player_input-1]) == '.':
+                valid = True
+            else:
+                print('This element is not empty. Try again --> ')
+        else: 
+            print('Wrong input. Input the number from 1 to 9 --> ')
+    return player_input
     
 
-def main(data: dict) -> None:
-    data = init_field(data)
+def is_win(board):
+    win_coords = ((0,1,2),(3,4,5),(6,7,8),(0,3,6),(1,4,7),(2,5,8),(0,4,8),(2,4,6))
+    for elem in win_coords:
+        if board[elem[0]] == board[elem[3]] == board[elem[2]]:
+            return board[elem[0]]
+    return False
 
-    # side = input('Would you want to play zeroes(yes, no): ')
-    # if side.lower() == 'yes':
-    #     data['player_symbol'] = '0'
-    #     data['bot_symbol'] = 'X'
 
-    while data['game'] == 'play':
-        if get_free_positions(data) == None:
-            data['win'] == 'nobody'
-        draw_status(data)
-        data = player_choise(data)
-        data = bot_choise(data)
+def main(field):
+    counter = 0
+    win = False
+    symbol = 'X'
+    while not win:
+        draw_field(field)
+        if counter % 2:
+            field[player_choise(symbol, field) - 1] = symbol
+            symbol = 'X'
+        else:
+            field[player_choise(symbol, field) - 1] = symbol
+            symbol = '0'
+        counter += 1
+        if counter > 4:
+            temp = is_win(field)
+            if temp:
+                print(f'{temp} is win')
+                win = True
+                break
+        if counter == 9:
+            print('Nobody win')
+            break
+    draw_field(field)
 
-    print(data['win'])
 
-if __name__ == '__main__':
-    main(data)
+main(field)
