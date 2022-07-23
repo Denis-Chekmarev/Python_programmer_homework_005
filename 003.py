@@ -64,7 +64,6 @@ def main(field):
         if counter == 9:
             print('Nobody win')
             break
-    # draw_field(field)
 
 
 main(field)
